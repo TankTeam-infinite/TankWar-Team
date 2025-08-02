@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GamePanel extends JPanel implements KeyListener {//GamePanel类是游戏的核心控制器，负责管理游戏循环、输入处理和游戏状态更新。
     private TankA tankA;
@@ -22,7 +23,10 @@ public class GamePanel extends JPanel implements KeyListener {//GamePanel类是�
     private final Random ran = new Random();
     private final BattleMaps map;
     private final scorePanel sPanel;
-    private final ArrayList<Bullet> bullets = new ArrayList<>();
+
+    // 使用线程安全的CopyOnWriteArrayList替代ArrayList
+    private final CopyOnWriteArrayList<Bullet> bullets = new CopyOnWriteArrayList<>();
+
     private boolean gameOver = false;
     private String winner = "";
 
@@ -38,7 +42,7 @@ public class GamePanel extends JPanel implements KeyListener {//GamePanel类是�
     //聊天回馈
     private ChatCallback chatCallback;
 
-    public boolean isHost(){//////////////////////////////////////////////////////
+    public boolean isHost() {//////////////////////////////////////////////////////
         return isHost;
     }
 
@@ -58,7 +62,7 @@ public class GamePanel extends JPanel implements KeyListener {//GamePanel类是�
 
         // 初始化游戏定时器（每16ms≈60FPS）
         //使用游戏循环（Timer）来定期处理按键状态，更新坦克位置。
-        gameTimer = new Timer(3, e -> {
+        gameTimer = new Timer(1, e -> {
             processInput();// 处理输入
             updateGame();// 更新游戏状态
             SwingUtilities.invokeLater(this::repaint);// 请求重绘
@@ -130,8 +134,10 @@ public class GamePanel extends JPanel implements KeyListener {//GamePanel类是�
 
             case BULLET_UPDATE:
                 //更新对方的子弹
-                Bullet bullet = (Bullet) message.data;
-                bullets.add(bullet);
+                synchronized (bullets) {
+                    Bullet bullet = (Bullet) message.data;
+                    bullets.add(bullet);
+                }
                 break;
             case CHAT_MESSAGE:
                 //更新聊天信息
@@ -144,8 +150,11 @@ public class GamePanel extends JPanel implements KeyListener {//GamePanel类是�
                 GameState state = (GameState) message.data;
                 tankA = state.tankA;
                 tankB = state.tankB;
-                bullets.clear();
-                bullets.addAll(state.bullets);
+                // 添加同步锁确保线程安全
+                synchronized (bullets) {
+                    bullets.clear();
+                    bullets.addAll(state.bullets);
+                }
                 break;
         }
     }
@@ -191,13 +200,16 @@ public class GamePanel extends JPanel implements KeyListener {//GamePanel类是�
         //添加子弹发射功能
         if (e.getKeyCode() == KeyEvent.VK_Q) {
             Bullet bullet = createBullet(tankA, true);
-            bullets.add(bullet);
-
+            synchronized (bullets) {
+                bullets.add(bullet);
+            }
             //发送子弹信息
             sendNetworkMessage(new NetworkMessage(MessageType.BULLET_UPDATE, bullet));
         } else if (e.getKeyCode() == KeyEvent.VK_SLASH) {
             Bullet bullet = createBullet(tankB, false);
-            bullets.add(bullet);
+            synchronized (bullets) {
+                bullets.add(bullet);
+            }
 
             //发送子弹信息
             sendNetworkMessage(new NetworkMessage(MessageType.BULLET_UPDATE, bullet));
@@ -248,19 +260,19 @@ public class GamePanel extends JPanel implements KeyListener {//GamePanel类是�
 
         if (pressedKeys.contains(leftKey)) {
             tank.setDirection(0);
-            tank.setSpeedX(-4);
+            tank.setSpeedX(-6);
         }
         if (pressedKeys.contains(rightKey)) {
             tank.setDirection(2);
-            tank.setSpeedX(+4);
+            tank.setSpeedX(+6);
         }
         if (pressedKeys.contains(upKey)) {
             tank.setDirection(1);
-            tank.setSpeedY(-4);
+            tank.setSpeedY(-6);
         }
         if (pressedKeys.contains(downKey)) {
             tank.setDirection(3);
-            tank.setSpeedY(+4);
+            tank.setSpeedY(+6);
         }
 
     }
@@ -341,35 +353,38 @@ public class GamePanel extends JPanel implements KeyListener {//GamePanel类是�
         }
 
         //if (isHost) {//主机处理所有游戏逻辑
-            handleTankMovement(tankA);
-            handleTankMovement(tankB);
+        handleTankMovement(tankA);
+        handleTankMovement(tankB);
 
-            //更新子弹位置
-            for (Bullet bullet : new ArrayList<>(bullets)) {
-                bullet.move();
-                //检测子弹与墙壁的碰撞
-                if (map.isCollidingWithWall(bullet.getBounds())) {
+        ArrayList<Bullet> bulletCopy = new ArrayList<>(bullets);
+
+        //更新子弹位置
+        for (Bullet bullet : bulletCopy) {
+            bullet.move();
+            //检测子弹与墙壁的碰撞
+            if (map.isCollidingWithWall(bullet.getBounds())) {
+                bullet.setActive(false);
+            }
+            //检测子弹与坦克碰撞
+            if (bullet.isActive()) {
+                if (bullet.isFormTankA() && bullet.getBounds().intersects(tankB.getBounds())) {
+                    gameOver = true;
+                    winner = "-TankA-";
                     bullet.setActive(false);
-                }
-                //检测子弹与坦克碰撞
-                if (bullet.isActive()) {
-                    if (bullet.isFormTankA() && bullet.getBounds().intersects(tankB.getBounds())) {
-                        gameOver = true;
-                        winner = "-TankA-";
-                        bullet.setActive(false);
-                        showGameOver();
-                    } else if (!bullet.isFormTankA() && bullet.getBounds().intersects(tankA.getBounds())) {
-                        gameOver = true;
-                        winner = "-TankB-";
-                        bullet.setActive(false);
-                        showGameOver();
-                    }
+                    showGameOver();
+                } else if (!bullet.isFormTankA() && bullet.getBounds().intersects(tankA.getBounds())) {
+                    gameOver = true;
+                    winner = "-TankB-";
+                    bullet.setActive(false);
+                    showGameOver();
                 }
             }
+        }
+        synchronized (bullets) {
             bullets.removeIf(bullet -> !bullet.isActive());//移除不活跃的子弹
-
-            //发送完整的游戏状态给客户端
-            sendNetworkMessage(new NetworkMessage(MessageType.GAME_STATE, new GameState(tankA, tankB, new ArrayList<>(bullets))));
+        }
+        //发送完整的游戏状态给客户端
+        sendNetworkMessage(new NetworkMessage(MessageType.GAME_STATE, new GameState(tankA, tankB, new ArrayList<>(bullets))));
 
         //}
     }
@@ -407,7 +422,7 @@ public class GamePanel extends JPanel implements KeyListener {//GamePanel类是�
     }
 
     //关闭网络连接
-    public void closeNetwork(){
+    public void closeNetwork() {
         try {
             if (socket != null) {
                 socket.close();
@@ -415,7 +430,7 @@ public class GamePanel extends JPanel implements KeyListener {//GamePanel类是�
             if (serverSocket != null) {
                 serverSocket.close();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

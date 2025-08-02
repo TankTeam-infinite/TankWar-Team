@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3a40b820-658c-4391-8815-a4de7cce2a8f" name="更改" comment="0802 commit">
+    <list default="true" id="3a40b820-658c-4391-8815-a4de7cce2a8f" name="更改" comment="0802 commit&#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/TankWar_UI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/TankWar_UI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,12 +30,12 @@
     &quot;assignee&quot;: &quot;xhz-fake&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "git@github.com:TankTeam-infinite/TankWar-Team.git",
-    "accountId": "00cece7b-5371-478e-aa50-b85e7e362b3b"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:TankTeam-infinite/TankWar-Team.git&quot;,
+    &quot;accountId&quot;: &quot;00cece7b-5371-478e-aa50-b85e7e362b3b&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -46,28 +45,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/17798/IdeaProjects/TankWar/src/main/java/TankWar",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/17798/IdeaProjects/TankWar/src/main/java/org/example/Main.java",
-    "project.structure.last.edited": "模块",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "vcs.Git",
-    "vue.rearranger.settings.migration": "true",
-    "应用程序.Main.executor": "Run",
-    "应用程序.TankWar_UI.executor": "Run"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/17798/IdeaProjects/TankWar/src/main/java/TankWar&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/17798/IdeaProjects/TankWar/src/main/java/org/example/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;模块&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;应用程序.Main.executor&quot;: &quot;Run&quot;,
+    &quot;应用程序.TankWar_UI.executor&quot;: &quot;Run&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\17798\IdeaProjects\TankWar\src\main\java\TankWar" />
@@ -186,7 +185,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754123458534</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="0802 commit&#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;">
+      <option name="closed" value="true" />
+      <created>1754124265084</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1754124265084</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -251,7 +258,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="0801 commit" />
     <MESSAGE value="0802 commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="0802 commit" />
+    <MESSAGE value="0802 commit&#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;" />
+    <option name="LAST_COMMIT_MESSAGE" value="0802 commit&#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

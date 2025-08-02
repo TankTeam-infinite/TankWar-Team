@@ -5,8 +5,8 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class ChatPanel extends JPanel {
-    private JTextArea chatArea;
-    private JTextField inputField;
+    private final JTextArea chatArea;
+    private final JTextField inputField;
 
     public ChatPanel(GamePanel gamePanel) {
         setPreferredSize(new Dimension(250, 0));
@@ -50,8 +50,8 @@ public class ChatPanel extends JPanel {
         ActionListener sendAction = e -> {
             String message = inputField.getText().trim();
             if (!message.isEmpty()) {
-                String formattedMessage = (gamePanel.isHost() ? "[Host]: " : "[Client]: " + message);
-                chatArea.append(formattedMessage+"\n");
+                String formattedMessage = (gamePanel.isHost() ? "[Host]: " : "[Client]: ") + message;
+                chatArea.append(formattedMessage + "\n");
                 gamePanel.sendChatMessage(formattedMessage);
                 inputField.setText("");
             }

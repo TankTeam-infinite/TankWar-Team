@@ -63,7 +63,7 @@ public class BattleMaps {
     };
 
     public void paintMap(Graphics2D g2d) {
-        brickImage[0] = new ImageIcon("Photo\\Bricks.png");
+        brickImage[0] = new ImageIcon("D:\\桌面\\Xing\\Photos\\Bricks.png");
         int mapX = 120;
         int mapY = 60;
         for (int x = 0; x < rows; x++) {

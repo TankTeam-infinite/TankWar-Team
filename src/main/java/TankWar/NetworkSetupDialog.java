@@ -30,6 +30,7 @@ public class NetworkSetupDialog extends JDialog {
             if (serverIP == null || serverIP.trim().isEmpty()) {////
                 serverIP = "localhost";
             }
+            setVisible(false);
         });
 
         add(hostButton);

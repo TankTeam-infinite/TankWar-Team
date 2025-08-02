@@ -14,7 +14,7 @@ public class TankB extends MoveObjects implements Serializable {
         setDirection(1);
 
         for (int i = 0; i < 4; i++) {
-            imgArr[i] = new ImageIcon("Photo\\TankB" + i + ".png");
+            imgArr[i] = new ImageIcon("D:\\桌面\\Xing\\Photos\\TankB" + i + ".png");
         }
     }
 
