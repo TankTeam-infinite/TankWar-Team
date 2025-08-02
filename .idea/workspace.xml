@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3a40b820-658c-4391-8815-a4de7cce2a8f" name="更改" comment="0801 commit">
+    <list default="true" id="3a40b820-658c-4391-8815-a4de7cce2a8f" name="更改" comment="0802 commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/BattleMaps.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/BattleMaps.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/TankA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/TankA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/TankB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/TankB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/scorePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/scorePanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,15 +162,68 @@
       <option name="project" value="LOCAL" />
       <updated>1754054125762</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="0802 commit">
+      <option name="closed" value="true" />
+      <created>1754123458533</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1754123458534</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="TankWar_Team_ssh/master" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="*" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="TankWar_Team_ssh/master" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="user">
+                    <value>
+                      <list>
+                        <option value="*" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -182,7 +231,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="0801 commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="0801 commit" />
+    <MESSAGE value="0802 commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="0802 commit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
