@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
 
-public class TankA extends MoveObjects  implements Serializable {
+public class TankA extends MoveObjects implements Serializable {
     private final ImageIcon[] imgArr = new ImageIcon[4];
 
     public TankA(int x, int y) {
@@ -37,6 +37,17 @@ public class TankA extends MoveObjects  implements Serializable {
 
     public Rectangle getBounds() {//获取边界方方法
         return new Rectangle(getX(), getY(), getWidth(), getHeight());
+    }
+
+    public void copyFrom(TankA source) {
+        if (source == null) {
+            return;
+        }
+        this.setX(source.getX());
+        this.setY(source.getY());
+        this.setSpeedY(source.getSpeedY());
+        this.setSpeedX(source.getSpeedX());
+        this.setDirection(source.getDirection());
     }
 
 }

@@ -72,4 +72,13 @@ public class MoveObjects implements Serializable {
     public void setDirection(int direction) {
         this.direction = direction;
     }
+
+    public int getSpeedY() {
+        return speedY;
+    }
+
+    public int getSpeedX() {
+        return speedX;
+    }
+
 }

@@ -5,10 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3a40b820-658c-4391-8815-a4de7cce2a8f" name="更改" comment="0802 great version commit &#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;">
-      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/BattleMaps.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/BattleMaps.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TankWar/NetworkUpdate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/MessageType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/MessageType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/MoveObjects.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/MoveObjects.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/TankA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/TankA.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/TankB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/TankB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/scorePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/scorePanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +42,9 @@
     &quot;accountId&quot;: &quot;00cece7b-5371-478e-aa50-b85e7e362b3b&quot;
   }
 }</component>
+  <component name="PerforceDirect.Settings">
+    <option name="CHARSET" value="无" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -196,7 +202,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754127751860</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="0802 great version commit &#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;">
+      <option name="closed" value="true" />
+      <created>1754128279992</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1754128279992</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

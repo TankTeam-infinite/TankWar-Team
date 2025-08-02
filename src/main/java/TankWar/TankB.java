@@ -39,4 +39,14 @@ public class TankB extends MoveObjects implements Serializable {
         return new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 
+    public void copyFrom(TankB source) {
+        if (source == null) {
+            return;
+        }
+        this.setX(source.getX());
+        this.setY(source.getY());
+        this.setSpeedY(source.getSpeedY());
+        this.setSpeedX(source.getSpeedX());
+        this.setDirection(source.getDirection());
+    }
 }

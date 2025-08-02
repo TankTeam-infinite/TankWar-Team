@@ -1,5 +1,8 @@
 package TankWar;
 
 public enum MessageType {
-    TANK_UPDATE, BULLET_UPDATE, CHAT_MESSAGE, GAME_STATE
+    CHAT_MESSAGE,  // 聊天消息
+    GAME_STATE,    // 游戏状态
+    PLAYER_INPUT,  // 玩家输入
+    PLAYER_FIRE    //开火请求
 }
