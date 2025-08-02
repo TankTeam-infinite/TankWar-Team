@@ -6,6 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="3a40b820-658c-4391-8815-a4de7cce2a8f" name="更改" comment="0801 commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/BattleMaps.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/BattleMaps.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/TankA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/TankA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/TankB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/TankB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/scorePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/scorePanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +85,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TankWar_UI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="TankWar_UI" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="TankWar.TankWar_UI" />
       <module name="TankWar" />
       <extension name="coverage">
@@ -94,6 +98,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="应用程序.Main" />
+      <item itemvalue="应用程序.TankWar_UI" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="应用程序.TankWar_UI" />
@@ -150,7 +158,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754050324046</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="0801 commit">
+      <option name="closed" value="true" />
+      <created>1754054125762</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1754054125762</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
