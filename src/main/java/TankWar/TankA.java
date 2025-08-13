@@ -45,8 +45,6 @@ public class TankA extends MoveObjects implements Serializable {
         }
         this.setX(source.getX());
         this.setY(source.getY());
-        this.setSpeedY(source.getSpeedY());
-        this.setSpeedX(source.getSpeedX());
         this.setDirection(source.getDirection());
     }
 

@@ -4,14 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3a40b820-658c-4391-8815-a4de7cce2a8f" name="更改" comment="0802 great version commit &#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;">
-      <change afterPath="$PROJECT_DIR$/src/main/java/TankWar/NetworkUpdate.java" afterDir="false" />
+    <list default="true" id="3a40b820-658c-4391-8815-a4de7cce2a8f" name="更改" comment="0802  commit">
+      <change afterPath="$PROJECT_DIR$/src/main/java/TankWar/BulletData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TankWar/InitialPosition.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/TankWar/TankState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/Bullet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/Bullet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/GameState.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/MessageType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/MessageType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/MoveObjects.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/MoveObjects.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/NetworkUpdate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/NetworkUpdate.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/TankA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/TankA.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/TankB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/TankB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/TankWar_UI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/TankWar_UI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/scorePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/ScorePanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,9 +48,6 @@
     &quot;accountId&quot;: &quot;00cece7b-5371-478e-aa50-b85e7e362b3b&quot;
   }
 }</component>
-  <component name="PerforceDirect.Settings">
-    <option name="CHARSET" value="无" />
-  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -210,7 +213,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754128279992</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="0802  commit">
+      <option name="closed" value="true" />
+      <created>1754141831573</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1754141831573</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -277,7 +288,8 @@
     <MESSAGE value="0802 commit" />
     <MESSAGE value="0802 commit&#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;" />
     <MESSAGE value="0802 great version commit &#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;" />
-    <option name="LAST_COMMIT_MESSAGE" value="0802 great version commit &#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;" />
+    <MESSAGE value="0802  commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="0802  commit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

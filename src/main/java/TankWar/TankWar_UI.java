@@ -6,7 +6,7 @@ import java.awt.*;
 public class TankWar_UI {
     public void initUI() {
         JFrame jf = new JFrame();
-        jf.setSize(1400, 930);
+        jf.setSize(1300, 910);
         jf.setTitle("---Tank War (OnLine)---");
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jf.setResizable(false);
@@ -20,7 +20,7 @@ public class TankWar_UI {
         gamePanel.setBackground(Color.WHITE);
 
         //创建分数面板
-        scorePanel scorePanel = new scorePanel();
+        ScorePanel scorePanel = new ScorePanel();
         scorePanel.setBackground(Color.WHITE);
 
         //创建聊天面板
