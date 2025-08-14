@@ -215,8 +215,7 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
 
                 // 客户端等待初始位置
                 Object initObj = in.readObject();
-                if (initObj instanceof InitialPosition) {
-                    InitialPosition init = (InitialPosition) initObj;
+                if (initObj instanceof InitialPosition init) {
                     tankA.setX(init.tankAX);
                     tankB.setX(init.tankBX);
                     tankA.setY(init.tankAY);
@@ -265,8 +264,7 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
                         // 客户端接收游戏状态
                         if (obj instanceof NetworkMessage) {
                             handleNetworkMessage((NetworkMessage) obj);
-                        } else if (obj instanceof GameState) {
-                            GameState state = (GameState) obj;
+                        } else if (obj instanceof GameState state) {
                             state.apply(this);
                         }
                     }
@@ -286,7 +284,6 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
         }
     }
 
-    @SuppressWarnings("unchecked")//忽略转型警告
     private void handleNetworkMessage(NetworkMessage message) {//管理网络信息
 
         if (message.type == MessageType.PLAYER_FIRE && isHost) {
@@ -459,12 +456,9 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
 
         // 碰撞检测
         Rectangle bounds = tank.getBounds();
-        boolean collision = false;
 
         // 检测墙壁碰撞
-        if (map.isCollidingWithWall(bounds)) {
-            collision = true;
-        }
+        boolean collision = map.isCollidingWithWall(bounds);
 
         // 检测坦克间碰撞
         if (tank == tankA && tankA.getBounds().intersects(tankB.getBounds())) {

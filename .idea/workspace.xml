@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3a40b820-658c-4391-8815-a4de7cce2a8f" name="更改" comment="0813 I finally finish the basic function of this TankWar&#10; (OnLine) commit" />
+    <list default="true" id="3a40b820-658c-4391-8815-a4de7cce2a8f" name="更改" comment="0814 commit" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -215,7 +215,15 @@
       <option name="project" value="LOCAL" />
       <updated>1755094580363</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="0814 commit">
+      <option name="closed" value="true" />
+      <created>1755170417335</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1755170417335</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -284,7 +292,8 @@
     <MESSAGE value="0802 great version commit &#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;" />
     <MESSAGE value="0802  commit" />
     <MESSAGE value="0813 I finally finish the basic function of this TankWar&#10; (OnLine) commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="0813 I finally finish the basic function of this TankWar&#10; (OnLine) commit" />
+    <MESSAGE value="0814 commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="0814 commit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
