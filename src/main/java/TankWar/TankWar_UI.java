@@ -11,7 +11,8 @@ public class TankWar_UI {
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jf.setResizable(false);
         jf.setLocationRelativeTo(null);
-        //网络设置对话框
+
+        //初始化CS双端机器,网络设置对话框
         NetworkSetupDialog setupDialog = new NetworkSetupDialog(jf);
         setupDialog.setVisible(true);
 
@@ -32,7 +33,7 @@ public class TankWar_UI {
         centerPanel.add(chatPanel,BorderLayout.EAST);
 
         //JFrame布局
-        jf.setLayout(new BorderLayout());
+        jf.setLayout(new BorderLayout());//划分为东西南北中
         jf.add(scorePanel, BorderLayout.SOUTH);
         jf.add(centerPanel,BorderLayout.CENTER);
         jf.setVisible(true);

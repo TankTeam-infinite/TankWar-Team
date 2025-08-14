@@ -28,7 +28,7 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
     private final Random ran = new Random();
     private final BattleMaps map;
     private final ScorePanel sPanel;
-    private boolean gameOver = false;
+    public boolean gameOver = false;
     private String winner = "";
 
     //网络相关变量
@@ -39,7 +39,7 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
     private ObjectInputStream in;
     private ObjectOutputStream out;
     private Thread networkThread;
-    private final AtomicBoolean running = new AtomicBoolean(true);
+    private final AtomicBoolean running = new AtomicBoolean(true);//标记网络是否还在连接中
 
     //聊天回馈
     private ChatCallback chatCallback;
@@ -47,7 +47,8 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
     //网络同步相关变量
     private static final int NETWORK_FPS = 30;//降低网络同步频率
     private final Timer networkSendTimer;
-    private final Queue<Set<Integer>> inputQueue = new ConcurrentLinkedQueue<>();
+    private final Queue<Set<Integer>> inputQueue = new ConcurrentLinkedQueue<>();//声明创建了一个线程安全的队列，用于存储键盘输入的整数集合
+    //支持多线程并发访问，无需额外同步,高并发场景下比阻塞队列性能更好
 
     //碰撞检测变量
     private int prevTankAX, prevTankAY;
@@ -57,9 +58,9 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
         return isHost;
     }
 
-    private static class GameState implements Serializable {//Serializable 是一个“空接口”，但它是 Java 对象能否被序列化的“通行证”。
+    private static class GameState implements Serializable {//静态成员类可以实现Serializable
         int tankAX, tankAY, tanADir;
-        int tankBX, tankBY, tanBDir;
+        int tankBX, tankBY, tankBDir;
         List<BulletData> bullets;
 
         public GameState(TankA a, TankB b, List<Bullet> bullets) {
@@ -68,7 +69,7 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
             this.tanADir = a.getDirection();
             this.tankBX = b.getX();
             this.tankBY = b.getY();
-            this.tanBDir = b.getDirection();
+            this.tankBDir = b.getDirection();
             this.bullets = new ArrayList<>();
             for (Bullet bullet : bullets) {
                 this.bullets.add(new BulletData(bullet));
@@ -81,7 +82,7 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
             game.tankB.setX(tankBX);
             game.tankB.setY(tankBY);
             game.tankA.setDirection(tanADir);
-            game.tankB.setDirection(tanBDir);
+            game.tankB.setDirection(tankBDir);
 
             //更新子弹
             game.bullets.clear();
@@ -91,6 +92,12 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
         }
     }
 
+    private static class NetworkResetSignal implements Serializable {
+    }//网络重置信号
+
+    private static class GameStateReset implements Serializable {
+    }//游戏状态重置信号
+
     public GamePanel(boolean isHost, String serverIP) {
         this.isHost = isHost;
         this.serverIP = serverIP;
@@ -99,10 +106,9 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
         sPanel = new ScorePanel();
 
         //初始化网络
-        initNetwork();
+        initNetwork();//包含了实时接收信息的线程
 
-        // 生成坦克A/B的合法位置
-        if (isHost) {
+        if (isHost) {//服务端生成坦克A/B的合法位置
             tankA = generatePositionA(45, 35);
             tankB = generatePositionB(45, 35);
 
@@ -111,17 +117,25 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
             prevTankAY = tankA.getY();
             prevTankBX = tankB.getX();
             prevTankBY = tankB.getY();
-            sendInitialPosition();
+            sendInitialPosition();//Host端发送初始化坦克位置的网络信息
         } else {
-            // 客户端等待初始位置
+            // 客户端等待初始位置,具体生成方法(同步的坐标)在上面的initNetwork()中
             tankA = new TankA(0, 0);
             tankB = new TankB(0, 0);
         }
 
-        // 初始化游戏定时器（每16ms≈60FPS）
+
         //使用游戏循环（Timer）来定期处理按键状态，更新坦克位置。
-        gameTimer = new Timer(16, e -> {
-            if (!gameOver) {
+        gameTimer = new Timer(13, e -> { // 初始化游戏定时器（每16ms≈60FPS）,定期处理游戏逻辑
+            if (gameOver) {
+                try {
+                    out.flush();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                pressedKeys.clear();
+                inputQueue.clear();
+            } else {
                 //保存坦克移动前的位置
                 prevTankAX = tankA.getX();
                 prevTankAY = tankA.getY();
@@ -134,14 +148,13 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
                     //客户端 只处理渲染和输出
                     processClientLogic();
                 }
-                repaint();// 请求重绘
-            }else{
-                pressedKeys.clear();
+                // 请求重绘
+                repaint();
             }
         });
         gameTimer.start();
 
-        // 网络同步循环 (30FPS)
+        // 网络信息发送的同步循环 (30FPS)
         networkSendTimer = new Timer(1000 / NETWORK_FPS, e -> {
             if (running.get()) {
                 sendNetworkUpdate();
@@ -153,7 +166,7 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
         addKeyListener(this);
     }
 
-    private void sendInitialPosition() {
+    private void sendInitialPosition() {//发送初始化坦克坐标的网络信息
         try {
             if (isHost && socket != null && !socket.isConnected()) {
                 out.writeObject(new InitialPosition(tankA, tankB));
@@ -162,10 +175,9 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
         } catch (IOException e) {
             System.err.println("发送初始位置失败" + e.getMessage());
         }
-
     }
 
-    private void sendNetworkUpdate() {
+    private void sendNetworkUpdate() {//发送网络信息更新的信息
         if (gameOver || !running.get()) {
             return;
         }
@@ -180,9 +192,11 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
             } else {
                 // 客户端：发送按键输入
                 Set<Integer> currentInput = new HashSet<>(pressedKeys);
-                if (socket != null && socket.isConnected()) {
+                if (socket != null && socket.isConnected() && !gameOver) {///////////
                     out.writeObject(currentInput);
                     out.flush();
+                } else {
+                    currentInput.clear();
                 }
             }
         } catch (SocketException e) {
@@ -213,10 +227,9 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
                 in = new ObjectInputStream(socket.getInputStream());
                 out = new ObjectOutputStream(socket.getOutputStream());
 
-                // 客户端等待初始位置
+                // 客户端等待初始位置,即客户端的坦克位置由主机确定并与之同步
                 Object initObj = in.readObject();
-                if (initObj instanceof InitialPosition) {
-                    InitialPosition init = (InitialPosition) initObj;
+                if (initObj instanceof InitialPosition init) {//接收到服务端发送的初始位置, 客户端初始化两个坦克
                     tankA.setX(init.tankAX);
                     tankB.setX(init.tankBX);
                     tankA.setY(init.tankAY);
@@ -227,13 +240,13 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
                     prevTankAY = tankA.getY();
                     prevTankBX = tankB.getX();
                     prevTankBY = tankB.getY();
-
                 }
             }
 
             //启动网络线程
             networkThread = new Thread(this::networkReceiveLoop);
-            networkThread.setDaemon(true);///////////////////
+            networkThread.setDaemon(true); //作用：将networkThread设置为守护线程,JVM会在所有用户线程结束后终止所有守护线程
+            // ,适用于后台支持性任务（如网络心跳、日志写入、监控等），这些线程不应该阻止程序退出
             networkThread.start();
 
         } catch (Exception e) {
@@ -243,52 +256,64 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
         }
     }
 
-    private void networkReceiveLoop() {
+    private void networkReceiveLoop() {//处理网络循环的核心方法
         try {
-            while (running.get()&& !Thread.currentThread().isInterrupted()) {
+            while (running.get() && !Thread.currentThread().isInterrupted()) {//只要C-S的连接仍然存在并且当前网络线程未中断就一直读取并处理信息
                 try {
-
                     if (in == null) {
                         break;
                     }
-                    Object obj = in.readObject();
+                    Object obj = in.readObject();//获取读入流中的对象(一共有三个需要获取即客户端输入的键,网络信息(开火和发消息), 游戏状态)
+                    // 1. 处理网络重置信号
+                    if (obj instanceof NetworkResetSignal) {
+                        pressedKeys.clear();
+                        inputQueue.clear();
+                        resetTankMovement();
+                        continue;//关键：跳过后续处理
+                    }
+
+                    // 2. 处理游戏状态重置信号
+                    if (obj instanceof GameStateReset) {
+                        // 收到重置信号，清除所有状态
+                        pressedKeys.clear();
+                        inputQueue.clear();
+                        resetTankMovement();
+                        continue;//关键：跳过后续处理
+                    }
+
                     if (isHost) {
-                        // 主机接收客户端输入
-                        if (obj instanceof Set) {
+                        // 主机接收客户端输入(包括键盘输入及网络消息)
+                        if (obj instanceof Set) {//处理客户端键盘输入
                             @SuppressWarnings("unchecked")
                             Set<Integer> input = (Set<Integer>) obj;
                             inputQueue.add(input);
-                        } else if (obj instanceof NetworkMessage) {
+                        } else if (obj instanceof NetworkMessage) {//处理网络消息
                             handleNetworkMessage((NetworkMessage) obj);
                         }
                     } else {
-                        // 客户端接收游戏状态
-                        if (obj instanceof NetworkMessage) {
-                            handleNetworkMessage((NetworkMessage) obj);
-                        } else if (obj instanceof GameState) {
-                            GameState state = (GameState) obj;
+                        if (obj instanceof GameState state) {
                             state.apply(this);
+                        }else if (obj instanceof NetworkMessage) {//处理网络消息
+                            handleNetworkMessage((NetworkMessage) obj);
                         }
                     }
-                }catch (SocketException e){
+                } catch (SocketException e) {
                     System.out.println("连接断开: " + e.getMessage());
                     break;
-                }catch (EOFException e){
+                } catch (EOFException e) {
                     System.out.println("连接正常关闭");
                     break;
                 }
             }
         } catch (Exception e) {
-                e.printStackTrace();
+            e.printStackTrace();
         } finally {
             System.out.println("网络线程退出");
-            closeNetwork();
+            closeNetwork();//关闭网络连接
         }
     }
 
-    @SuppressWarnings("unchecked")//忽略转型警告
-    private void handleNetworkMessage(NetworkMessage message) {//管理网络信息
-
+    private void handleNetworkMessage(NetworkMessage message) {//处理接收到的网络信息
         if (message.type == MessageType.PLAYER_FIRE && isHost) {
             // 主机为客户端生成子弹
             Bullet bullet = createBullet(tankB, false);
@@ -296,8 +321,13 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
                 bullets.add(bullet);
             }
         } else if (message.type == MessageType.CHAT_MESSAGE && chatCallback != null) {
-            chatCallback.onMessageReceived((String) message.data);
+            chatCallback.onMessageReceived((String) message.data);//调用ChatCallback接口所提供的方法
         }
+    }
+
+    //发送聊天消息
+    public void sendChatMessage(String message) {
+        sendNetworkMessage(new NetworkMessage(MessageType.CHAT_MESSAGE, message));
     }
 
     private void sendNetworkMessage(NetworkMessage message) {//发送网络信息
@@ -342,6 +372,9 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if (gameOver) {
+            return; // 游戏结束时忽略按键输入
+        }
         pressedKeys.add(e.getKeyCode());
 
         if (e.getKeyCode() == KeyEvent.VK_Q && isHost) {
@@ -357,7 +390,11 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
 
     @Override
     public void keyReleased(KeyEvent e) {
-        pressedKeys.remove(e.getKeyCode());
+        int keyCode = e.getKeyCode();
+        pressedKeys.remove(keyCode);
+        if (gameOver) {
+            pressedKeys.clear();
+        }
     }
 
     @Override
@@ -365,23 +402,18 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
     }
 
     private void processHostLogic() {
-
-        //1.处理客户端输入
+        //1.处理客户端输入, 设置当前坦克B的状态属性
         processClientInput();
 
-        //2.处理本地坦克移动(TankA)
+        //2.处理本地坦克移动(TankA), 设置当前坦克A的状态属性
         processTankInput(tankA, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_W, KeyEvent.VK_S);
 
-        //3. 更新坦克位置
+        //3. 更新服务端上的坦克位置
         updateTankPosition(tankA);
         updateTankPosition(tankB);
 
         //4. 更新子弹
         updateBullets();
-
-        if(gameOver){
-            pressedKeys.clear();
-        }
     }
 
     private void processClientLogic() {//客户端只收集输入，不执行游戏逻辑
@@ -390,18 +422,18 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
 
         //更新坦克位置
         updateTankPosition(tankB);
-
-        if(gameOver){
-            pressedKeys.clear();
-        }
     }
 
-    private void processClientInput() {
+    private void processClientInput() {//服务端处理客户端输入
+        if (gameOver) {
+            pressedKeys.clear();
+            inputQueue.clear();
+        }
         //处理所有排队中的客户端输入
         while (!inputQueue.isEmpty()) {
             Set<Integer> input = inputQueue.poll();
             // 使用专门的按键处理方法
-            processTankInput(tankB, input, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_UP, KeyEvent.VK_DOWN);
+            processByTankInput(tankB, input, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_UP, KeyEvent.VK_DOWN);
         }
     }
 
@@ -411,25 +443,24 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
 
         if (pressedKeys.contains(leftKey)) {
             tank.setDirection(0);
-            tank.setSpeedX(-6);
+            tank.setSpeedX(-5);
         }
         if (pressedKeys.contains(rightKey)) {
             tank.setDirection(2);
-            tank.setSpeedX(6);
+            tank.setSpeedX(5);
         }
         if (pressedKeys.contains(upKey)) {
             tank.setDirection(1);
-            tank.setSpeedY(-6);
+            tank.setSpeedY(-5);
         }
         if (pressedKeys.contains(downKey)) {
             tank.setDirection(3);
-            tank.setSpeedY(6);
+            tank.setSpeedY(5);
         }
-
     }
 
-    private void processTankInput(MoveObjects tank, Set<Integer> keys,
-                                  int leftKey, int rightKey, int upKey, int downKey) {
+    private void processByTankInput(MoveObjects tank, Set<Integer> keys,
+                                    int leftKey, int rightKey, int upKey, int downKey) {
         if (keys == null) return;
 
         tank.setSpeedX(0);
@@ -437,19 +468,19 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
 
         if (keys.contains(leftKey)) {
             tank.setDirection(0);
-            tank.setSpeedX(-6);
+            tank.setSpeedX(-5);
         }
         if (keys.contains(rightKey)) {
             tank.setDirection(2);
-            tank.setSpeedX(6);
+            tank.setSpeedX(5);
         }
         if (keys.contains(upKey)) {
             tank.setDirection(1);
-            tank.setSpeedY(-6);
+            tank.setSpeedY(-5);
         }
         if (keys.contains(downKey)) {
             tank.setDirection(3);
-            tank.setSpeedY(6);
+            tank.setSpeedY(5);
         }
     }
 
@@ -459,12 +490,9 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
 
         // 碰撞检测
         Rectangle bounds = tank.getBounds();
-        boolean collision = false;
 
         // 检测墙壁碰撞
-        if (map.isCollidingWithWall(bounds)) {
-            collision = true;
-        }
+        boolean collision = map.isCollidingWithWall(bounds);
 
         // 检测坦克间碰撞
         if (tank == tankA && tankA.getBounds().intersects(tankB.getBounds())) {
@@ -527,11 +555,6 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
 
         // 绘制玩家信息
         drawPlayerInfo(g2d);
-
-        //绘制游戏结束信息
-        if (gameOver) {
-            showGameOver();
-        }
     }
 
     private void drawPlayerInfo(Graphics2D g2d) {
@@ -575,25 +598,34 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
                 if (bullet.isFormTankA() && bullet.getBounds().intersects(tankB.getBounds())) {
                     gameOver = true;
                     winner = "-TankA-";
-                    //bullet.setActive(false);
                     showGameOver();
                 } else if (!bullet.isFormTankA() && bullet.getBounds().intersects(tankA.getBounds())) {
                     gameOver = true;
                     winner = "-TankB-";
-                    //bullet.setActive(false);
                     showGameOver();
                 }
             }
         }
-
         bullets.removeIf(bullet -> !bullet.isActive());//移除不活跃的子弹
     }
 
 
-    private void resetGame() {
-        // 重置游戏前再次确保清除按键状态
+    private void resetGame() {//重置游戏
+        // 清除按键状态
         pressedKeys.clear();
+        inputQueue.clear();
         bullets.clear();
+        gameOver = false;
+        winner = "";
+
+        // 重置坦克移动状态
+        resetTankMovement();
+
+        //发送游戏状态重置信号
+        sendGameStateReset();
+
+        //  清空网络队列
+        clearNetworkQueue();
 
         if (isHost) {
             // 主机重新生成位置并发送
@@ -605,7 +637,7 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
             prevTankAY = tankA.getY();
             prevTankBX = tankB.getX();
             prevTankBY = tankB.getY();
-            sendInitialPosition();
+            sendInitialPosition();//// Host端发送初始化坦克位置的网络信息
         } else {
             //客户端重置位置
             tankA.setX(prevTankAX);
@@ -614,20 +646,52 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
             tankB.setX(prevTankBX);
         }
 
-        gameOver = false;
-        winner = "";
+        //重启游戏循环
+        gameTimer.start();
+        networkSendTimer.start();
 
-        requestFocusInWindow();
+        requestFocusInWindow();// 重新获取焦点
+    }
+
+    private void clearNetworkQueue() {
+        //清空输入队列
+        while (!inputQueue.isEmpty()) {
+            inputQueue.poll();
+        }
+
+        //尝试清空网络缓冲区
+        try {
+            if (in != null) {
+                while (in.available() > 0) {
+                    in.readObject();
+                }
+            }
+        } catch (Exception e) {
+        }
     }
 
     private void showGameOver() {
-        pressedKeys.clear();// 在显示对话框前清除按键状态
+        // 1.清除所有按键状态
+        pressedKeys.clear();
+        inputQueue.clear();
+
+        // 2.重置坦克移动状态
+        resetTankMovement();
+
+        // 3. 发送网络状态重置信号
+        if (!isHost) {
+            sendNetworkResetSignal();
+        }
+
+        //4.停止所有网络通信,这些暂停游戏逻辑
+        gameTimer.stop();
+        networkSendTimer.stop();
 
         SwingUtilities.invokeLater(() -> {
-            int option = JOptionPane.showConfirmDialog(
+            int option;
+            option = JOptionPane.showConfirmDialog(
                     this, "  " + winner + "   Wins!!!\n WANT PLAY AGAIN?", "--Game Over--", JOptionPane.YES_NO_OPTION
             );
-
             if (option == JOptionPane.YES_OPTION) {
                 resetGame();
             } else {
@@ -636,13 +700,47 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
         });
     }
 
-    public void setChatCallback(ChatCallback callback) {
-        this.chatCallback = callback;
+    private void sendNetworkResetSignal() {//发送网络重置信号
+        try {
+            if (socket != null && socket.isConnected()) {
+                out.writeObject(new NetworkResetSignal());
+                out.flush();
+            }
+        } catch (IOException e) {
+            System.err.println("发送网络重置信号失败: " + e.getMessage());
+        }
+
     }
 
-    //发送消息
-    public void sendChatMessage(String message) {
-        sendNetworkMessage(new NetworkMessage(MessageType.CHAT_MESSAGE, message));
+    private void sendGameStateReset() {//发送游戏状态重置信号
+        try {
+            if (socket != null && socket.isConnected()) {
+                out.writeObject(new GameStateReset());
+                out.flush();
+            }
+        } catch (IOException e) {
+            System.err.println("发送游戏状态重置信号失败: " + e.getMessage());
+        }
+
+    }
+
+    private void resetTankMovement() {
+        // 重置坦克的移动状态
+        if (tankA != null) {
+            tankA.setSpeedX(0);
+            tankA.setSpeedY(0);
+            tankA.setDirection(1);
+        }
+        if (tankB != null) {
+            tankB.setSpeedX(0);
+            tankB.setSpeedY(0);
+            tankB.setDirection(1);
+        }
+
+    }
+
+    public void setChatCallback(ChatCallback callback) {
+        this.chatCallback = callback;
     }
 
     public void closeNetwork() {
@@ -680,4 +778,3 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
 （3）Swing使用被动绘制机制，应重写paintComponent()方法getGraphics()获取的是临
 时图形上下文，无法持久化
 */
-

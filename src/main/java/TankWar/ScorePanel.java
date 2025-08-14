@@ -15,7 +15,7 @@ public class ScorePanel extends JPanel {
         //绘制玩家标签
         g2d.setColor(Color.black);
         g2d.setFont(new Font("Arial",Font.BOLD,20));
-        g2d.drawString("Player A:",140,850);
-        g2d.drawString("Player B:",740,850);
+        g2d.drawString("Player B:",140,850);
+        g2d.drawString("Player A:",740,852);
     }
 }
