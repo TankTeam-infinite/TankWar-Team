@@ -5,11 +5,18 @@ import java.io.Serializable;
 
 public class Bullet implements Serializable {
     private int x, y;
-    private final int speed;
+    private final int speed = 10;
     private final int direction;
     private final int size = 6;
     private final boolean formTankA;
     private boolean active = true;
+
+    public Bullet(int x, int y, int direction, boolean formTankA) {
+        this.y = y;
+        this.x = x;
+        this.direction = direction;
+        this.formTankA = formTankA;
+    }
 
     public int getX() {
         return x;
@@ -37,15 +44,6 @@ public class Bullet implements Serializable {
 
     public int getSize() {
         return size;
-    }
-
-
-    public Bullet(int x, int y, int direction, boolean formTankA) {
-        this.y = y;
-        this.x = x;
-        this.speed = 10;//子弹速度
-        this.direction = direction;
-        this.formTankA = formTankA;
     }
 
     public void move() {

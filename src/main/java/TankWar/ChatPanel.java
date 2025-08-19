@@ -35,7 +35,7 @@ public class ChatPanel extends JPanel {
         //设置聊天消息处理器
         gamePanel.setChatCallback(new ChatCallback() {
             @Override
-            public void onMessageReceived(String message) {
+            public void onMessageReceived(String message) {//接受并显示消息的方法
                 chatArea.append(message + "\n");//将指定文本追加到 JTextArea 的末尾
                 chatArea.setCaretPosition(chatArea.getDocument().getLength());//根据文档中当前包含的字符总数设置文本插入符（光标）的位置
                 //即获取文本区域当前内容的长度并将光标移动到文本的末尾
@@ -60,6 +60,9 @@ public class ChatPanel extends JPanel {
         };
 
         sendButton.addActionListener(sendAction);
-        inputField.addActionListener(sendAction);
+        inputField.addActionListener(sendAction);// JTextField 的内置行为
+        // 当获得焦点的 JTextField 检测到回车键时：
+        // 1. 自动触发所有注册的 ActionListener
+        // 2. 执行 sendAction 逻辑
     }
 }
