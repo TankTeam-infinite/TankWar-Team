@@ -10,5 +10,4 @@ public class NetworkMessage implements Serializable {
         this.type = type;
         this.data = data;
     }
-
 }

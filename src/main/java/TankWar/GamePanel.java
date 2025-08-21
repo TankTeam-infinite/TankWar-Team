@@ -250,7 +250,6 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
         }
     }
 
-
     private void initNetwork() {//初始化CS架构
         try {
             if (isHost) {
@@ -288,7 +287,7 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
             }
 
             //启动网络线程
-            networkThread = new Thread(this::networkReceiveLoop);
+            networkThread = new Thread(this::networkReceiveLoop);//方法引用操作符，意思是“引用...的方法”。
             networkThread.setDaemon(true); //作用：将networkThread设置为守护线程,JVM会在所有用户线程结束后终止所有守护线程
             // ,适用于后台支持性任务（如网络心跳、日志写入、监控等），这些线程不应该阻止程序退出
             networkThread.start();
@@ -335,7 +334,7 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
                             handleNetworkMessage((NetworkMessage) obj);
                         }
                     } else {
-                        if (obj instanceof GameState state) {
+                        if (obj instanceof GameState state) {//处理游戏状态
                             state.apply(this);//apply() 方法将接收到的游戏状态应用到客户端的游戏实例上：
                         } else if (obj instanceof NetworkMessage) {//处理网络消息
                             handleNetworkMessage((NetworkMessage) obj);
@@ -403,7 +402,7 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
         if (gameOver) {
             return; // 游戏结束时忽略按键输入
         }
-        pressedKeys.add(e.getKeyCode());//双端都会存储所有双方按下的键
+        pressedKeys.add(e.getKeyCode());//每个端自己的pressedKeys存储自己按下的键
 
         if (isHost && e.getKeyCode() == KeyEvent.VK_Q) {
             // 主机本地开火
