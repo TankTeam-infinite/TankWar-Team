@@ -186,12 +186,12 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
         }
 
         try {
-            if (isHost) {// 主机：发送完整游戏状态
+            if (isHost) {// 主机：定期发送完整游戏状态
                 if (socket != null && socket.isConnected()) {
                     out.writeObject(new GameState(tankA, tankB, bullets));
                     out.flush();
                 }
-            } else {// 客户端：发送按键输入
+            } else {// 客户端：定期发送按键输入
                 Set<Integer> currentInput = new HashSet<>(pressedKeys);
                 if (socket != null && socket.isConnected() && !gameOver) {
                     out.writeObject(currentInput);
@@ -446,9 +446,6 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
     private void processClientLogic() {//客户端只收集输入，不执行游戏逻辑
         //处理本地输入
         processTankInput(tankB, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_UP, KeyEvent.VK_DOWN);
-
-        //更新坦克位置
-        updateTankPosition(tankB);
     }
 
     private void processClientInput() {//服务端处理客户端输入

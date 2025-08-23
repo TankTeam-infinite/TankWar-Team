@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3a40b820-658c-4391-8815-a4de7cce2a8f" name="更改" comment="0819 增加了一些注释 commit&#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;">
+    <list default="true" id="3a40b820-658c-4391-8815-a4de7cce2a8f" name="更改" comment="0821 增加了一些注释 commit&#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/GamePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TankWar/NetworkMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TankWar/NetworkMessage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +68,7 @@
     "settings.editor.selected.configurable": "vcs.Git",
     "vue.rearranger.settings.migration": "true",
     "应用程序.Main.executor": "Run",
-    "应用程序.TankWar_UI.executor": "Debug"
+    "应用程序.TankWar_UI.executor": "Run"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -254,7 +253,15 @@
       <option name="project" value="LOCAL" />
       <updated>1755612713161</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="0821 增加了一些注释 commit&#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;">
+      <option name="closed" value="true" />
+      <created>1755785915050</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1755785915050</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -327,7 +334,8 @@
     <MESSAGE value="0814 commit&#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;" />
     <MESSAGE value="0818 修复了游戏结束时坦克因上局没有清除的键盘输入而导致坦克没有正确初始化的问题 commit&#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;" />
     <MESSAGE value="0819 增加了一些注释 commit&#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;" />
-    <option name="LAST_COMMIT_MESSAGE" value="0819 增加了一些注释 commit&#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;" />
+    <MESSAGE value="0821 增加了一些注释 commit&#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;" />
+    <option name="LAST_COMMIT_MESSAGE" value="0821 增加了一些注释 commit&#10;&#10;Signed-off-by: 邢浩哲 &lt;15044172+xinghaozhe@user.noreply.gitee.com&gt;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
