@@ -670,7 +670,6 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
         //重启游戏循环
         gameTimer.start();
         networkSendTimer.start();
-
         requestFocusInWindow();// 重新获取焦点
     }
 
