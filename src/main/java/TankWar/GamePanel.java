@@ -21,7 +21,7 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
     private TankA tankA;
     private TankB tankB;
     private final CopyOnWriteArrayList<Bullet> bullets = new CopyOnWriteArrayList<>();//线程安全的集合实现，特别适合读多写少的并发场景
-    //内置线程安全机制，无需额外同步, 修改操作（add/remove）会创建底层数组的新副本
+    //内置线程安全机制，无需额外同步/ 加锁, 修改操作（add/remove）会创建底层数组的新副本
 
     //游戏状态
     private final Set<Integer> pressedKeys = new HashSet<>();
@@ -235,7 +235,6 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
         } catch (IOException e) {
             System.err.println("发送网络重置信号失败: " + e.getMessage());
         }
-
     }
 
     //发送游戏状态重置信号
@@ -360,9 +359,7 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
         if (isHost && message.type == MessageType.PLAYER_FIRE) {
             // 主机为客户端生成子弹
             Bullet bullet = createBullet(tankB, false);
-            synchronized (bullets) {
-                bullets.add(bullet);
-            }
+            bullets.add(bullet);
         } else if (message.type == MessageType.CHAT_MESSAGE && chatCallback != null) {
             chatCallback.onMessageReceived((String) message.data);//调用ChatCallback接口所提供的方法
         }
@@ -392,9 +389,7 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
 
     private void fireBullet(MoveObjects tank, boolean fromTankA) {
         Bullet bullet = createBullet(tank, fromTankA);
-        synchronized (bullets) {//多个线程同时访问 bullets 集合：需加锁
-            bullets.add(bullet);
-        }
+        bullets.add(bullet);
     }
 
     @Override
@@ -663,7 +658,7 @@ public class GamePanel extends JPanel implements KeyListener, Serializable {//Ga
             prevTankAY = tankA.getY();
             prevTankBX = tankB.getX();
             prevTankBY = tankB.getY();
-            sendInitialPosition();//// Host端发送初始化坦克位置的网络信息
+            sendInitialPosition();// Host端发送初始化坦克位置的网络信息
         } else {
             //客户端重置位置
             tankA.setX(prevTankAX);
